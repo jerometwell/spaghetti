@@ -1,0 +1,14 @@
+{
+  "name": "spaghetti",
+  "version": "0.0.1",
+  "description": "A Dependency Injection Container for Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Jerome Twell <jtwell1@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^26.6.1"
+  }
+}
