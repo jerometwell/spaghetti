@@ -79,7 +79,24 @@ const dad2 = cx.resolve("dad");
 Object.is(dad1.car, dad2.car) // true
 ```
 
-## Wiring
+## 🏷 Labels
+Labels are what we use to identify dependencies. They are string-based, case-insensitive identifiers that are attached to dependency registrations.
+
+```javascript
+// register with one label or many
+cx.transient("engine", DieselEngine);
+cx.transient(["ENGINE", "loud"], DieselEngine);
+
+// resolve for any matching label
+cx.resolve("LOUD");
+cx.resolve("engine");
+
+// resolve for an expression
+// See "Multi-label Registrations/Expressions" below
+cx.resolve("engine&LOUD");
+```
+
+## 🔌 Wiring
 Lacking reflection, this library requires annotation via "wiring". You must provide strings that represent dependencies. 
 
 Wiring is given as a argument list with strings as values. Nested arrays and strings will be resolved recursively:
@@ -94,3 +111,34 @@ Wiring is given as a argument list with strings as values. Nested arrays and str
 
 Wiring can be given invasively, by setting the static/class property `__wiring` e.g. `Car.__wiring = [...]` Or externally using the `Container#wire` method.
 
+## 🧮 Multi-label Registrations/Expressions
+Registrations can be made against multiple tags by passing an array of strings in place of a label. This registration will respond to requests for that label.
+
+```
+container.transient(["vegetable", "red"], Tomato);
+container.singleton(["db", "primary"], DatabaseProvider);
+```
+
+Wiring can be given as an expression using a logical syntax. 
+
+#### Supported Operators
+* `|` Or
+* `&` And
+* `!` Not
+* `()` Parentheses
+
+```javascript
+container.transient(["vegetable", "red"], Tomato);
+container.transient(["vegetable", "green"], Celery);
+
+container.resolve("vegetable&!red") // find me a vegetable that isn't red
+
+// be mindful of open-ended matching (exclusive OR/NOT anything)
+container.resolve("!red") // blue 2005 toyota yaris, 1299cc, 2 axle rigid body
+
+// exclusive NOT can still match previous excluded terms
+container.transient(["vegetable", "red"], Tomato);
+container.resolve("!red&!vegetable") // Tomato
+
+container.resolve("!(red&vegetable)") // !Tomato
+```

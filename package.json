@@ -10,5 +10,8 @@
   "license": "MIT",
   "devDependencies": {
     "jest": "^26.6.1"
+  },
+  "dependencies": {
+    "logical-expression-parser": "^1.0.0"
   }
 }
