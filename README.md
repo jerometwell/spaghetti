@@ -94,6 +94,9 @@ cx.resolve("engine");
 // resolve for an expression
 // See "Multi-label Registrations/Expressions" below
 cx.resolve("engine&LOUD");
+
+// the same label can be registered multiple times - single resolves will resolve the first match.
+cx.transient("engine", PetrolEngine);
 ```
 
 ## 🔌 Wiring
@@ -141,4 +144,21 @@ container.transient(["vegetable", "red"], Tomato);
 container.resolve("!red&!vegetable") // Tomato
 
 container.resolve("!(red&vegetable)") // !Tomato
+```
+
+## Resolving Multiple
+Any expression can be used to resolve _all matching registrations_. Use `label[]` notation to match an array in wiring, or invoke the `#resolveAll` method directly.
+
+```javascript
+container.singleton("person", Mom);
+container.transient("engine", DieselEngine);
+container.transient("engine", PetrolEngine);
+
+class MultiEngineCar {
+  static __wiring = ["person", "engine[]"]
+
+// class will receive new MultiEngineCar(<Mom>, [<DieselEngine>, <PetrolEngine>])
+// this wiring `engine[]` is functionally identical to the resolve statements below:
+container.resolve("engine[]");
+container.resolveAll("engine");
 ```
