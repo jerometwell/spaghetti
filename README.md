@@ -1,4 +1,4 @@
-# Spaghetti 🍝
+# spaghetti-code 🍝
 A non-invasive dependency injection container for ES6 Classes in javascript that isn't based on reflection.
 
 ## Why tho?
@@ -109,7 +109,7 @@ Wiring is given as a argument list with strings as values. Nested arrays and str
 
 ["car", ["cat", "dog"]] // => new Thing(<car>, [<cat>, <dog>])
 
-[{vehicle: "car", optionalPet: "cat"}] // => new Thing({vehicle: <car>, pet: <cat>})
+[{vehicle: "car", pet: "cat"}] // => new Thing({vehicle: <car>, pet: <cat>})
 ```
 
 Wiring can be given invasively, by setting the static/class property `__wiring` e.g. `Car.__wiring = [...]` Or externally using the `Container#wire` method.
@@ -161,4 +161,15 @@ class MultiEngineCar {
 // this wiring `engine[]` is functionally identical to the resolve statements below:
 container.resolve("engine[]");
 container.resolveAll("engine");
+
+// resolveAll is evaluated per expression, not per label: 
+container.resolve("loud&engine[]"); // get all loud engines
 ```
+
+## TODO `v1.0.0`
+* support for non-es6classes
+* container child scopes
+* circular dependencies (maybe)
+* container logging
+* container options - warnOnDuplicate, errOnDuplcate, etc
+* example application

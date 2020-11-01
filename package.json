@@ -1,6 +1,6 @@
 {
-  "name": "spaghetti",
-  "version": "0.0.1",
+  "name": "spaghetti-code",
+  "version": "0.1.0",
   "description": "A Dependency Injection Container for Javascript",
   "main": "index.js",
   "scripts": {
