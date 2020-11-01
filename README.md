@@ -79,6 +79,19 @@ const dad2 = cx.resolve("dad");
 Object.is(dad1.car, dad2.car) // true
 ```
 
+## Non-class constructors
+When registering non-class constructors, use `#singletonFn` and `#transientFn` methods. Be mindful of how closure can preserve state, even on transient resolves. 
+
+```javascript
+cx.singletonFn("config", () => ({
+  baseUrl: process.env.URL
+}));
+cx.singletonFn("api_client", (config) => axios.create({baseUrl: config.url}), {wiring: ["config"]});
+
+const api = cx.resolve("api_client");
+// api.post(...)
+```
+
 ## 🏷 Labels
 Labels are what we use to identify dependencies. They are string-based, case-insensitive identifiers that are attached to dependency registrations.
 
@@ -113,6 +126,12 @@ Wiring is given as a argument list with strings as values. Nested arrays and str
 ```
 
 Wiring can be given invasively, by setting the static/class property `__wiring` e.g. `Car.__wiring = [...]` Or externally using the `Container#wire` method.
+
+Wiring can also be given during registration: 
+
+```javascript
+container.transient("car", Car, {wiring: ["engine"]] // => new Car(<PetrolEngine>)
+```
 
 ## 🧮 Multi-label Registrations/Expressions
 Registrations can be made against multiple tags by passing an array of strings in place of a label. This registration will respond to requests for that label.
@@ -167,9 +186,8 @@ container.resolve("loud&engine[]"); // get all loud engines
 ```
 
 ## TODO `v1.0.0`
-* support for non-es6classes, direct-value dependencies
+* ✔ support for non-es6classes, direct-value dependencies
 * container child scopes
-* circular dependencies (maybe)
 * container logging
 * container options - warnOnDuplicate, errOnDuplcate, etc
 * example application

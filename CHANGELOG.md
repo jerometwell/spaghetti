@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   -------------------------------------------------------------------
 ## [Unreleased]
+- Added Support for non-es6 class dependencies with new functions: `singletonFn` and `transientFn`, which will not use the `new` keyword when resolving.
+- Added wiring support when registering new dependencies. use `container.transient("label_name", KlassName, {wiring: ["engine"]})` and your constructor will receive the correct wiring on resolve.
 
 ## [0.1.1] 2020-11-01
  - Fix a require path that prevented package from being imported.
