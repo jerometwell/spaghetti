@@ -1,4 +1,4 @@
-const {Container} = require("lib/container");
+const {Container} = require("./lib/container");
 
 module.exports = {
     Container
