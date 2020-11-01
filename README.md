@@ -167,7 +167,7 @@ container.resolve("loud&engine[]"); // get all loud engines
 ```
 
 ## TODO `v1.0.0`
-* support for non-es6classes
+* support for non-es6classes, direct-value dependencies
 * container child scopes
 * circular dependencies (maybe)
 * container logging
